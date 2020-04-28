@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
@@ -18,7 +19,10 @@ import { Container, Title, BackToSignIn, BackToSignInText } from './styles';
 
 const SignUp: React.FC = () => {
   const navigation = useNavigation();
+
   const formRef = useRef<FormHandles>(null);
+  const passwordRef = useRef<TextInput>(null);
+  const emailRef = useRef<TextInput>(null);
 
   return (
     <>
@@ -43,9 +47,36 @@ const SignUp: React.FC = () => {
                 console.log(data);
               }}
             >
-              <Input name="name" icon="user" placeholder="Nome" />
-              <Input name="email" icon="mail" placeholder="Email" />
-              <Input name="password" icon="lock" placeholder="Senha" />
+              <Input
+                autoCorrect={false}
+                autoCapitalize="words"
+                name="name"
+                icon="user"
+                placeholder="Nome"
+                returnKeyType="next"
+                onSubmitEditing={() => emailRef.current?.focus()}
+              />
+              <Input
+                ref={emailRef}
+                autoCorrect={false}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current?.focus()}
+                name="email"
+                icon="mail"
+                placeholder="Email"
+              />
+              <Input
+                ref={passwordRef}
+                secureTextEntry
+                textContentType="newPassword"
+                onSubmitEditing={() => formRef.current?.submitForm()}
+                returnKeyType="send"
+                name="password"
+                icon="lock"
+                placeholder="Senha"
+              />
               <Button onPress={() => formRef.current?.submitForm()}>
                 Enviar
               </Button>
