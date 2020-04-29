@@ -25,6 +25,7 @@ import {
   CreateAccountButton,
   CreateAccountButtonText,
 } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 interface SignInFormData {
   email: string;
@@ -33,39 +34,41 @@ interface SignInFormData {
 
 const SignIn: React.FC = () => {
   const navigation = useNavigation();
+  const { signIn } = useAuth();
   const formRef = useRef<FormHandles>(null);
   const passwordRef = useRef<TextInput>(null);
 
-  const handleSignIn = useCallback(async (data: SignInFormData) => {
-    try {
-      formRef.current?.setErrors({});
+  const handleSignIn = useCallback(
+    async (data: SignInFormData) => {
+      try {
+        formRef.current?.setErrors({});
 
-      const schema = Yup.object().shape({
-        email: Yup.string()
-          .required('Email obrigatório')
-          .email('Digite um email válido'),
-        password: Yup.string().required('Senha obrigatório'),
-      });
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .required('Email obrigatório')
+            .email('Digite um email válido'),
+          password: Yup.string().required('Senha obrigatório'),
+        });
 
-      await schema.validate(data, { abortEarly: false });
-      // await signIn({ email: data.email, password: data.password });
+        await schema.validate(data, { abortEarly: false });
+        await signIn({ email: data.email, password: data.password });
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
 
-      // history.push('/dashboard');
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(error);
+          formRef.current?.setErrors(errors);
 
-        formRef.current?.setErrors(errors);
+          return;
+        }
 
-        return;
+        Alert.alert(
+          'Erro na Autenticação',
+          'Ocorreu um erro ao realizar o login, verifique seu login e senha.',
+        );
       }
-
-      Alert.alert(
-        'Erro na Autenticação',
-        'Ocorreu um erro ao realizar o login, verifique seu login e senha.',
-      );
-    }
-  }, []);
+    },
+    [signIn],
+  );
 
   return (
     <>
