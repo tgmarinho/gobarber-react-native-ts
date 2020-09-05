@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { FlatList } from 'react-native';
 import { Provider } from './index';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
@@ -38,4 +39,52 @@ export const UserAvatar = styled.Image`
 `;
 
 // gambi para usar tipos no FlatList com TS
-export const ProvidersList = styled(FlatList as new () => FlatList<Provider>)``;
+export const ProvidersList = styled(FlatList as new () => FlatList<Provider>)`
+  padding: 32px 24px 16px;
+`;
+
+export const ProviderContainer = styled(RectButton)`
+  background: #323b47;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ProviderAvatar = styled.Image`
+  height: 72px;
+  width: 72px;
+
+  border-radius: 36px;
+`;
+
+export const ProviderInfo = styled.View`
+  flex: 1;
+  margin-left: 20px;
+`;
+
+export const ProviderName = styled.Text`
+  font-family: 'RobotoSlab-Medium';
+  font-size: 18px;
+  color: #f4ede8;
+`;
+
+export const ProviderMeta = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+`;
+
+export const ProviderMetaText = styled.Text`
+  font-family: 'RobotoSlab-Regular';
+  color: #999591;
+  margin-left: 8px;
+`;
+
+export const ProvidersListTitle = styled.Text`
+  font-size: 24px;
+  margin-bottom: 24px;
+  color: #f4ede8;
+  font-family: 'RobotoSlab-Medium';
+`;
