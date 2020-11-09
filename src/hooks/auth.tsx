@@ -38,6 +38,8 @@ const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
   const [loading, setLoading] = useState(true);
 
+  // AsyncStorage.multiRemove(['@GoBarber:token', '@GoBarber:user']);
+
   useEffect(() => {
     async function loadStorageData(): Promise<void> {
       const [token, user] = await AsyncStorage.multiGet([
